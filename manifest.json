@@ -1,9 +1,12 @@
 {
   "files": {
+    ".gitignore": "8bb231745f3269273de8c1ee80c0bda0",
     "config.lua": "c0cb3bc90dff0ac3c072870ba1abe041",
     "fondolauncher.jpg": "1d76e5f94d9663d93da39bf2f0f6adb6",
     "forgottenserver.before-account-reset-20260730.s3db": "0a0927ecc0877257d42849443d456c97",
     "forgottenserver.s3db": "3af7d5f8b6d6ee8ecb606e609dc720ec",
+    "GUARDAR CAMBIOS.bat": "95211c209d34b2066d26bdf715b1391c",
+    "guardar_cambios.ps1": "4f2d54f96b7d87f3354c48b844c9730e",
     "iconv.dll": "d7cbbedfad7ad68e12bf6ffcc01c3080",
     "ICSharpCode.SharpZipLib.dll": "c8164876b6f66616d68387443621510c",
     "libmysql.dll": "9234bfba1f555ffcfed310ca9eef2d49",
@@ -13,6 +16,7 @@
     "mysql.dll": "fcdece81068de0d7c3b984e73e5b34a8",
     "PO Dash World [Advanced] - GUI.exe": "7e98a73fcf7ce2af51bc8fb2f1814dc5",
     "Pokémon - Atrápalos Ya! (Latino) Oscar Roa [Full] (1).ogg": "48fff48ff69066c0ae6bb0a7d4b5dfbe",
+    "README.md": "2040cee12b04284f7f05b722d6178907",
     "sqlite3.dll": "9bfe3e9a406bc5a960e656e17da7e82b",
     "sqlitestudio-2.1.4.exe": "1773d29002bf8dc03940af04df1d10bb",
     "zlib1.dll": "da70cf4536b48175e71fb4bf49bbc4f0",
