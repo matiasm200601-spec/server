@@ -1497,6 +1497,8 @@
     "data/weapons/scripts/viper_star.lua": "696ca219792cdde1dcc5a0a4636798fe",
     "data/world/aawe-house.xml": "ea620fad68b10e5b1bd41d3eea3d015c",
     "data/world/aawe-spawn.xml": "d8860cab0f9f4315618029300660a822",
+    "data/world/exchange-house.xml": "432b57c8fa46fff1eb23c807b4f1a36a",
+    "data/world/exchange-spawn.xml": "f952207439c77131769b3224e67cf251",
     "data/world/mastermap.otbm": "fbef4e22a81360cb8178a3ab85580a28",
     "data/world/Untitled-1-house.xml": "68985ecd0a066345eccd6115c5af724d",
     "data/world/Untitled-1-spawn.xml": "4aae9966994f2c45a423d24a2cbe491b",
