@@ -27,10 +27,10 @@ EXCLUIR_EXT  = {".s3db", ".db", ".log", ".ogg", ".exe", ".dll"}
 # Excluir archivos con caracteres problemáticos para URLs
 # (espacios, paréntesis, acentos, etc en rutas del servidor)
 EXCLUIR_PATRONES = [
-    r"data[/\\]world[/\\]exchange-",       # archivos temporales de exchange
-    r"data[/\\]world[/\\].*-\d{4}-\d{2}",  # backups con fecha
-    r"Pokemon Statistics",                   # carpeta con espacios problemáticos
-    r"Pokémon",                              # caracteres especiales
+    r"data[/\\]world[/\\]exchange-[^/\\]+\.(xml|txt)$",  # archivos exchange-*.xml/txt
+    r"data[/\\]world[/\\].+-\d{4}-\d{2}-\d{2}",          # backups con fecha
+    r"Pokemon Statistics",                                 # carpeta con espacios problemáticos
+    r"Pokémon",                                            # caracteres especiales
 ]
 
 def tiene_patron_problematico(rel_path):
