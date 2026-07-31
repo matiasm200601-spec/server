@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Shiny Zekrom MVP" nameDescription="a shiny zekrom mvp" race="psychic" experience="0" speed="137" manacost="0">
+    <health now="180" max="180"/>
+    <look type="1832" head="100" body="100" legs="95" feet="113" corpse="13098"/>
+    <targetchange interval="10000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+        <flag summonable="1"/>
+        <flag attackable="1"/>
+        <flag hostile="1"/>
+        <flag illusionable="1"/>
+        <flag convinceable="1"/>
+        <flag pushable="1"/>
+        <flag canpushitems="0"/>
+        <flag canpushcreatures="0"/>
+        <flag targetdistance="1"/>
+        <flag staticattack="97"/>
+        <flag runonhealth="0"/>
+        <flag hungerdelay="17"/>
+    </flags>
+    <attacks>
+		<attack name="melee" interval="800" chance="100" range="1" min="-50" max="-2100"/>
+    </attacks>
+    <defenses armor="0" defense="0"/>
+    <voices interval="5000" chance="10">
+        <voice sentence="ZEKROM!"/>
+    </voices>
+    <loot>
+        <item id="11452" chance="200" count="1" countmax="1"/>
+    </loot>
+    <script>
+        <event name="Spawn"/>
+    </script>
+    <script>
+        <event name="quest7"/>
+    </script>
+</monster>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<creaturescripts>
+
+	<event type="joinchannel" name="ShowPokedex" event="script" value="newpokedex.lua"/>
+	<event type="leavechannel" name="ClosePokedex" event="script" value="newpokedex.lua"/>
+
+	<event type="kill" name="task_count" script="task.lua"/>
+
+	<event type="kill" name="dropStone" script="dropStone.lua"/>
+
+	<event type="login" name="PlayerLogin" event="script" value="login.lua"/>
+
+
+	<event type="receivemail" name="Mail" event="script" value="mail.lua"/>
+
+	<event type="reportbug" name="SaveReportBug" script="reportbug.lua"/>
+
+	<event type="think" name="Idle" event="script" value="idle.lua"/>
+
+
+        <event type="death" name="quest5" event="script" value="Quest5.lua"/>
+        <event type="death" name="quest6" event="script" value="Quest6.lua"/>
+        <event type="death" name="quest7" event="script" value="Quest7.lua"/>
+        <event type="death" name="quest8" event="script" value="Quest8.lua"/>
+        <event type="death" name="quest9" event="script" value="Quest9.lua"/>
+        <event type="death" name="quest10" event="script" value="Quest10.lua"/>
+        <event type="death" name="quest11" event="script" value="Quest11.lua"/>
+        <event type="death" name="quest12" event="script" value="Quest12.lua"/>
+        <event type="death" name="quest12-1" event="script" value="Quest12-1.lua"/>
+        <event type="death" name="quest13" event="script" value="Quest13.lua"/>
+        <event type="death" name="quest14" event="script" value="Quest14.lua"/>
+        <event type="death" name="quest15" event="script" value="Quest15.lua"/>
+        <event type="death" name="quest16" event="script" value="Quest16.lua"/>
+        <event type="death" name="quest17" event="script" value="Quest17.lua"/>
+        <event type="death" name="quest18" event="script" value="Quest18.lua"/>
+
+
+	<event type="death" name="Death" event="script" value="playerpdeath.lua"/>
+
+	<event type="death" name="Experience" event="script" value="pokeexp.lua"/>
+
+	<event type="spawn" name="Spawn" event="script" value="spawn.lua"/>
+
+	<event type="think" name="PokemonIdle" event="script" value="poketele.lua"/>
+
+	<event type="think" name="t" event="script" value="wildpoke.lua"/>
+
+	<event type="statschange" name="GeneralConfiguration" event="script" value="exp2.0.lua"/>
+	<event type="advance" name="EffectOnAdvance" event="script" value="levelup.lua"/>
+
+
+	<event type="direction" name="DirectionSystem" event="script" value="wildpoke.lua"/>
+	<event type="attack" name="AttackSystem" event="script" value="wildpoke.lua"/>
+	<event type="cast" name="CastSystem" event="script" value="wildpoke.lua"/>
+	<event type="target" name="WildAttack" event="script" value="playerattack.lua"/>
+              <event type="advance" name="premio" event="script" value="premio.lua"/>
+
+
+	<event type="look" name="LookSystem" event="script" value="look.lua"/>
+
+
+
+	<event type="death" name="SummonDeath" event="script" value="goback.lua"/>
+	<event type="logout" name="PlayerLogout" event="script" value="goback.lua"/>
+	
+<!-- PkW -->
+	<event type="kill" name="Monsteritem" event="script" value="Monsteritem.lua"/>
+	<event type="login" name="StaffLogin" event="script" value="admlg.lua"/>
+	<event type="advance" name="UpAbsolute" event="script" value="uplevelabsolute.lua"/>
+
+<!-- TV SYSTEM -->
+	<event type="joinchannel" name="WatchTv" event="script" value="tvsys.lua"/>
+	<event type="leavechannel" name="StopWatchingTv" event="script" value="tvsys.lua"/>
+
+	<event type="walk" name="WalkTv" event="script" value="tvsys.lua"/>
+
+	<event type="textedit" name="RecordTv" event="script" value="tvsys.lua"/>
+
+
+	<event type="traderequest" name="T2" event="script" value="trade system.lua"/>
+
+	<event type="tradeaccept" name="T1" event="script" value="trade system.lua"/>
+
+        <event type="login" name="aloot_reg" event="script" value="aloot.lua"/>
+        <event type="kill" name="aloot_kill" event="script" value="aloot.lua"/>
+
+</creaturescripts>

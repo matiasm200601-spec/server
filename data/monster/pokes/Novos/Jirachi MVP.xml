@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Jirachi MVP" nameDescription="a jirachi MVP" race="electric" experience="668" speed="152" manacost="0">
+  <health now="900000" max="900000"/>
+  <look type="1803" head="65" body="80" legs="95" feet="113" corpse="13143"/>
+	 <targetchange interval="10000" chance="0"/>
+    <strategy attack="1000" defense="0"/>
+    <flags>
+        <flag summonable="1"/>
+        <flag attackable="1"/>
+        <flag hostile="1"/>
+        <flag illusionable="1"/>
+        <flag convinceable="1"/>
+        <flag pushable="1"/>
+        <flag canpushitems="0"/>
+        <flag canpushcreatures="0"/>
+        <flag targetdistance="1"/>
+        <flag staticattack="97"/>
+        <flag runonhealth="0"/>
+        <flag hungerdelay="21"/>
+    </flags>
+    <attacks>
+        <attack name="melee" interval="20" chance="100" range="1" min="-50000" max="-55000"/>
+        <attack name="Restore" interval="250" chance="100" range="6"/>
+    </attacks>
+    <defenses armor="0" defense="0"/>
+  <voices interval="5000" chance="10">
+	<voice sentence="JII!"/>
+      <voice sentence="RAAAA!"/>
+      <voice sentence="CHIII!"/>
+  </voices>
+    <loot>
+        <item id="12164" chance="5000" countmax="50"/>
+        <item id="12176" chance="4000" countmax="5"/>
+        <item id="12198" chance="3000" count="1" countmax="1"/>
+        <item id="11444" chance="100" count="1" countmax="1"/>
+    </loot>
+    <script>
+        <event name="Spawn"/>
+    </script>
+    <script>
+        <event name="quest16"/>
+    </script>
+</monster>
+

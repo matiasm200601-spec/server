@@ -1,0 +1,38 @@
+<!-- PROMOTE MASTER -->
+
+<outfit id="32" quest="181630">
+<list gender="0" lookType="1179" name="Raibolt Master"/>
+<list gender="1" lookType="1164" name="Raibolt Master"/>
+</outfit>
+<outfit id="33" quest="181631">
+<list gender="0" lookType="1178" name="Seavell Master"/>
+<list gender="1" lookType="1165" name="Seavell Master"/>
+</outfit>
+<outfit id="34" quest="181632">
+<list gender="0" lookType="1177" name="Naturia Master"/>
+<list gender="1" lookType="1166" name="Naturia Master"/>
+</outfit>
+<outfit id="35" quest="181633">
+<list gender="0" lookType="1180" name="Malefic Master"/>
+<list gender="1" lookType="1168" name="Malefic Master"/>
+</outfit>
+<outfit id="36" quest="181634">
+<list gender="0" lookType="1175" name="Volcanic Superior"/>
+<list gender="1" lookType="1169" name="Volcanic Superior"/>
+</outfit>
+<outfit id="37" quest="181635">
+<list gender="0" lookType="1174" name="Wingeon Master"/>
+<list gender="1" lookType="1170" name="Wingeon Master"/>
+</outfit>
+<outfit id="38" quest="181636">
+<list gender="0" lookType="1173" name="Orebound Master"/>
+<list gender="1" lookType="1171" name="Orebound Master"/>
+</outfit>
+<outfit id="39" quest="181637">
+<list gender="0" lookType="1174" name="Gardestrike Master"/>
+<list gender="1" lookType="1170" name="Gardestrike Master"/>
+</outfit>
+<outfit id="40" quest="181638">
+<list gender="0" lookType="1435" name="Psycraft Master"/>
+<list gender="1" lookType="1426" name="Psycraft Master"/>
+</outfit>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Shiny Omanyte" nameDescription="a Shiny omanyte" race="rock" experience="248" speed="114" manacost="0">
+  <health now="50" max="50"/>
+  <look type="1332" head="15" body="20" legs="95" feet="113" corpse="12558"/>
+  <targetchange interval="10000" chance="0"/>
+  <strategy attack="100" defense="0"/>
+<flags>
+ <flag summonable="1"/>
+ <flag attackable="1"/>
+ <flag hostile="1"/>
+<flag passive="1"/>
+ <flag illusionable="1"/>
+ <flag convinceable="1"/>
+ <flag pushable="1"/>
+ <flag canpushitems="0"/>
+ <flag canpushcreatures="0"/>
+ <flag targetdistance="1"/>
+ <flag staticattack="97"/>
+ <flag runonhealth="0"/>
+ <flag hungerdelay="23"/>
+</flags>
+
+<attacks>
+        <attack name="melee" interval="2000" chance="100" range="1" min="-50" max="-100"/>
+        <attack name="Bite" interval="2805" chance="29" range="1"/>
+        <attack name="Rock Throw" interval="2852" chance="29" range="3"/>
+        <attack name="Waterball" interval="2946" chance="28" range="3"/>
+        <attack name="Water Gun" interval="3040" chance="28" range="6"/>
+        <attack name="Harden" interval="5625" chance="18" range="6"/>
+		<attack name="Mud Shot" interval="2925" chance="24" range="3"/>
+        <attack name="Ancient Power" interval="4040" chance="20" range="6"/>
+</attacks>
+
+
+<defenses armor="0" defense="0">
+</defenses>
+
+ <voices interval="5000" chance="10">
+ <voice sentence="OMANYTE!"/>
+ </voices>
+
+  <loot>
+  </loot>
+
+<script>
+<event name="Spawn"/>
+</script>
+</monster>

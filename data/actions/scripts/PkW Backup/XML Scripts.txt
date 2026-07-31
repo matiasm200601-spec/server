@@ -1,0 +1,12 @@
+PADRAO:
+        <action actionid="10000" event="script" value="Quest/Quest1.lua"/>
+
+Temporario:
+        <action uniqueid="8999" script="Water/1hora.lua"/>
+
+BOX:
+     <action itemid="13192" event="script" value="PkW Box/BLuta.lua" allowfaruse="1"/>
+     <action itemid="13193" event="script" value="PkW Box/BGigantes.lua" allowfaruse="1"/>
+     <action itemid="13194" event="script" value="PkW Box/BShiny.lua" allowfaruse="1"/>
+     <action itemid="13195" event="script" value="PkW Box/BPeso.lua" allowfaruse="1"/>
+     <action itemid="13196" event="script" value="PkW Box/BAves.lua" allowfaruse="1"/>

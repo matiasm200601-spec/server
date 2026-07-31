@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<npc name="Teleport Para Valleys" script="boat_mystic.lua" access="3" walkinterval="0" floorchange="0">
+ 	<look type="516" head="114" body="119" legs="114" feet="114"/>
+<parameters>
+      <parameter key="module_travel" value="1"/>
+		<parameter key="message_greet" value="Blz |PLAYERNAME|. Quer ir para onde Saffron, Valley dos Charizard, Valley dos Blastoise, Valley dos Venusaur?"/>
+        <parameter key="travel_destinations" value="saffron,1053,1050,7,2000000;valley dos charizard,1125,762,7,2000000;valley dos blastoise,684,1341,7,2000000;valley dos venusaur,514,1150,7,2000000"/>
+</parameters>
+</npc>

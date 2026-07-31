@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<npc name="Darkbioneco  " speed="0">
+
+	<health now="686390" max="686390"/>
+
+	<look type="522" head="114" body="114" legs="114" feet="94"/>
+
+	<parameters>
+
+
+	</parameters>
+
+</npc>

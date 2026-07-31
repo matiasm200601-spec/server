@@ -1,0 +1,26 @@
+# Bases de datos (se generan solas)
+*.s3db
+*.db
+
+# Logs
+data/logs/
+*.log
+
+# Archivos del sistema
+Thumbs.db
+desktop.ini
+
+# DLLs del servidor (ya están en el VPS)
+*.dll
+
+# Ejecutables
+*.exe
+
+# Backup
+Backup/
+
+# Audio
+*.ogg
+
+# Archivos de SQLite studio
+sqlitestudio-2.1.4.exe

@@ -1,0 +1,60 @@
+145		function markpos
+146		function markpos
+147		function markpos
+
+33145		function flypos
+33146		function flypos
+33147		function flypos
+
+3890		status (blind)
+3891		status (confuse)
+3892  		status (burn)
+3893 		status (poison)
+98271		status (sleep)
+3894		status (fear)
+
+
+990		checa se o player está duelando com gym
+
+10		loja de roupas
+100-140		outfits
+1000 - 1251	pokedex + catches + use
+23254		slot machine
+17001		ride
+17000		fly
+63215		surf
+54843		tentativas de capturar
+54844		speed do surf/fly/ride
+30001		first items
+88726		effect do pokemon cansado (exp.lua)
+88727		cooldown do !love
+99282		TV
+99283		TV
+99284		TV
+8981		ghost walk
+8900		trade system
+
+
+3		status (blind)
+6		status (magia disable)
+98271		sleep
+34		reflect
+33		self destruction
+446		bloquear direction
+877		mimic
+878		mimic wall
+1000		level
+1001		offense
+1002		defense
+1003		speed
+1004		vitality
+1005		sp. attack
+1006 		wild exp
+1007		nick
+1008		happiness (codificado em c++)
+1010		ditto
+1011		offense2
+1012		defense
+1013		speed
+1014		vitality
+1015		sp. attack

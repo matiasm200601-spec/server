@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<globalevents>
+
+	<globalevent name="save" interval="1800" event="script" value="save.lua"/>
+	<globalevent name="clean" interval="7200" event="script" value="clean.lua"/>
+
+        <globalevent name="Lotery" interval="300" event="script" value="lotery.lua"/>
+
+	<globalevent name="serverstart" type="start" event="script" value="start.lua"/>
+
+	<globalevent name="playersrecord" type="record" event="script" value="record.lua"/>
+
+	<globalevent name="GoldenArena1" time="6:00" event="script" value="Golden Arena.lua"/>
+	<globalevent name="GoldenArena2" time="7:50" event="script" value="Golden Arena.lua"/>
+	<globalevent name="GoldenArena3" time="11:50" event="script" value="Golden Arena.lua"/>
+	<globalevent name="GoldenArena4" time="12:40" event="script" value="Golden Arena.lua"/>
+	<globalevent name="GoldenArena5" time="21:50" event="script" value="Golden Arena.lua"/>
+
+              <globalevent name="mensagem" interval="120" event="script" value="mensagem.lua"/>
+              <globalevent name="Torneio" interval="60" event="script" value="mensagem.lua"/>
+
+              <globalevent name="TournamentStart" time="22:50" event="script" value="tournament.lua"/>
+			  
+	<!-- <PkW> -->
+
+	<!-- <globalevent name="timer_example" time="21:35" event="script" value="my_script.lua"/> -->
+
+</globalevents>

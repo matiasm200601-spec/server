@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Itens Task" script="data/npc/scripts/default.lua" walkinterval="2000" floorchange="0">
+	<health now="185" max="185"/>
+	<look type="510" head="91" body="114" legs="86" feet="0"/>
+	<parameters>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="message_greet" value="Ola..."/>
+		<parameter key="message_farewall" value="Tchau"/>
+		<parameter key="message_walkaway" value="Que Rude!"/>
+		<parameter key="shop_buyable" value="apple bite,12173,10;comb,12179,10;iron bracelet,12192,10;bottle of poison,12165,10;gosme,12202,10;traces of ghost,12204,10;seed,12163,10;mushrooms,12183,10;small stone,12337,10;bone,12208,10;sandbag,12177,10;future orb,12194,10;twisted spoon,12193,10;mimic clothes,12166,10;screw,12164,10;imam,12198,10;electric box,12176,10;water gem,12161,10;water pendant,12170,10;ice orb,12201,10;essence of fire,12162,10;pot of lava,12152,10;nail,12157,10;bird beak,12172,10;stick slash,12199,10;feather,12200,10;"/>
+	</parameters>
+</npc>

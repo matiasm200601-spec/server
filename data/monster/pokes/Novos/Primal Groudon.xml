@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Primal Groudon" nameDescription="a mini primal groudon" race="electric" experience="668" speed="450" manacost="0">
+  <health now="500" max="500"/>
+  <look type="1910" head="60" body="70" legs="95" feet="113" corpse="13145"/>
+  <targetchange interval="10000" chance="0"/>
+  <strategy attack="1010" defense="0"/>
+<flags>
+ <flag summonable="1"/>
+ <flag attackable="1"/>
+ <flag hostile="1"/>
+ <flag illusionable="1"/>
+ <flag convinceable="1"/>
+ <flag pushable="1"/>
+ <flag canpushitems="0"/>
+ <flag canpushcreatures="0"/>
+ <flag targetdistance="1"/>
+ <flag staticattack="97"/>
+ <flag runonhealth="0"/>
+ <flag hungerdelay="21"/>
+</flags>
+
+ <attacks>
+        <attack name="melee" interval="200" chance="100" range="1" min="-26" max="-25000"/>
+        <attack name="Restore" interval="2852" chance="29" range="1"/>
+</attacks>
+
+
+<defenses armor="0" defense="0">
+</defenses>
+
+ <voices interval="5000" chance="10">
+ <voice sentence="GROUDON!"/>
+ </voices>
+
+  <loot>
+  </loot>
+
+<script>
+<event name="Spawn"/>
+</script>
+</monster>

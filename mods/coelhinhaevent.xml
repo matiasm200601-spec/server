@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mod name="PikachuEvent" version="1.0" author="Absolute" contact="tibiaking.com" enabled="yes">
+
+	<config name="config_pikachu_event">
+		<![CDATA[
+			configPikachuEvent = {
+				storages = {
+					main = 'PikachuEventMain', -- set free storage
+					player = 'PikachuEventPlayer', -- set free storage
+					joining = 'PikachuEventJoining', -- set free storage
+					kills = 'PikachuEventKills', -- set free storage
+					exhaust = 'PikachuEventExhaust', -- set free storage
+					countEvent = 'PikachuEventCountEvent' -- set free storage
+				},
+				
+				position = {x=1744,y=1806,z=7}, -- position to which player is teleporting
+				room = {
+					from = {x=1727,y=1800,z=7}, -- left top corner of event room
+					to = {x=1762,y=1819,z=7} -- right bottom corner of event room
+				},				
+				
+				rewards = {2366, 13193, 13195, 13192}, -- reward id which player can win (reward is random)				
+				players = {
+					max = 15, -- max players in event
+					min = 2, -- min players to event start
+					minLevel = 30, -- min level to join to event
+					pvpEnabled = false -- can players hit theirselfs
+				},
+				
+				days = {
+					['Saturday'] = {'12:00:00'}
+				},
+				
+				spawnDelay = 2000, -- miliseconds
+				amountCreatingMonsters = 5,
+				monsters = {'Pikachu', 'Ash'}, -- name of monsters which is creating in event
+
+				delayTime = 5.0, -- time in which players who joined to event are teleporting to teleport position [miuntes]
+				startEvent = 1, -- time from teleport to start event [seconds]
+				stopEvent = 19200, -- [seconds]
+				text = '-PL-\nAby wygrac i otrzymac nagrode, zabij jak najwieksza liczbe pikachu przez 20min lub pozostan sam na arenie.\n\n-ENG-\nTo win and get a reward, kill as many pikachus for 20 minutes or stay the same in the arena.'
+			}
+		]]>
+	</config>
+	
+	<lib name="lib_pikachu_event">
+		<![CDATA[
+			function doStopPikachuEvent()
+				if getStorage(configPikachuEvent.storages.main) > 0 then
+					local playerTable, creatureTable = {}, {}
+
+					for x = configPikachuEvent.room.from.x, configPikachuEvent.room.to.x do
+						for y = configPikachuEvent.room.from.y, configPikachuEvent.room.to.y do
+							local n, i = getTileInfo({x=x, y=y, z=configPikachuEvent.room.from.z}).creatures, 1
+							if n ~= 0 then
+								local v = getThingfromPos({x=x, y=y, z=configPikachuEvent.room.from.z, stackpos=i}).uid
+								while v ~= 0 do
+									if isPlayer(v) then
+										table.insert(playerTable, v)
+										if n == #playerTable then
+											break
+										end
+									elseif isMonster(v) then
+										table.insert(creatureTable, v)
+										if n == #creatureTable then
+											break
+										end
+									end
+									i = i + 1
+									v = getThingfromPos({x=x, y=y, z=configPikachuEvent.room.from.z, stackpos=i}).uid
+								end
+							end
+						end
+					end
+
+					if #playerTable > 1 then
+						table.sort(playerTable, function(a, b) return (getCreatureStorage(a, configPikachuEvent.storages.kills)) > (getCreatureStorage(b, configPikachuEvent.storages.kills)) end)
+						
+						local prize = math.random(#configPikachuEvent.rewards)
+						
+						doTeleportThing(playerTable[1], getTownTemplePosition(getPlayerTown(playerTable[1])))
+						doCreatureSetStorage(playerTable[1], configPikachuEvent.storages.kills, 0)
+						doPlayerAddItem(playerTable[1], configPikachuEvent.rewards[prize], 1)
+						doCreatureAddHealth(playerTable[1], getCreatureMaxHealth(playerTable[1]) - getCreatureHealth(playerTable[1]))
+						doCreatureAddMana(playerTable[1], getCreatureMaxMana(playerTable[1]) - getCreatureMana(playerTable[1]))
+						doPlayerSendTextMessage(playerTable[1], MESSAGE_EVENT_ADVANCE, 'You win! You have received '..getItemNameById(configPikachuEvent.rewards[prize])..' as reward.')
+						doBroadcastMessage('Pikachu Plague Attack has finished. The winner is '..getCreatureName(playerTable[1])..'. Congratulations!')
+						doSetStorage(configPikachuEvent.storages.main, -1)
+						
+						db.query("INSERT INTO `events` (`event_name`, `winner_name`, `won_item`, `time_win`) VALUES (\"Pikachu\", \"" .. getCreatureName(playerTable[1]) .. "\", \"" .. getItemNameById(configPikachuEvent.rewards[prize]) .. "\", " .. getStorage(configPikachuEvent.storages.countEvent) ..");")
+
+						for i = 2, #playerTable do
+							doCreatureAddHealth(playerTable[i], getCreatureMaxHealth(playerTable[i]) - getCreatureHealth(playerTable[i]))
+							doCreatureAddMana(playerTable[i], getCreatureMaxMana(playerTable[i]) - getCreatureMana(playerTable[i]))
+							doTeleportThing(playerTable[i], getTownTemplePosition(getPlayerTown(playerTable[i])))
+							doPlayerSendTextMessage(playerTable[i], MESSAGE_EVENT_ADVANCE, 'You loss.')
+							doSendMagicEffect(getThingPos(playerTable[i]), CONST_ME_STUN)
+							doCreatureSetStorage(playerTable[i], configPikachuEvent.storages.kills, 0)
+						end
+
+						for i = 1, #creatureTable do
+							if isMonster(creatureTable[i]) then
+								doRemoveCreature(creatureTable[i])
+							end
+						end
+						
+						doSetStorage(configPikachuEvent.storages.countEvent, getStorage(configPikachuEvent.storages.countEvent) + 1)
+					elseif #playerTable == 0 then
+						for i = 1, #creatureTable do
+							if isMonster(creatureTable[i]) then
+								doRemoveCreature(creatureTable[i])
+							end
+						end
+					
+						doBroadcastMessage('No one win in Pikachu Plague Attack.')
+						doSetStorage(configPikachuEvent.storages.main, -1)
+						doSetStorage(configPikachuEvent.storages.countEvent, getStorage(configPikachuEvent.storages.countEvent) + 1)
+					end
+				end
+			end
+
+			function doStartPikachuEvent()
+				doSetStorage(configPikachuEvent.storages.joining, -1)
+
+				if configPikachuEvent.players.min <= doCountPlayersPikachuEvent() then
+					for _, cid in ipairs(getPlayersOnline()) do
+						if getCreatureStorage(cid, configPikachuEvent.storages.player) > 0 then
+							doCreatureSetStorage(cid, configPikachuEvent.storages.player, -1)
+							doTeleportThing(cid, configPikachuEvent.position)
+							doCreatureSetNoMove(cid, false)
+							doRemoveCondition(cid, CONDITION_INFIGHT)
+							
+							doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, 'Get ready. Pikachus Plague Attack starts in '..configPikachuEvent.startEvent..' seconds.')
+						end
+					end
+					
+					addEvent(doSetStorage, configPikachuEvent.startEvent * 1000, configPikachuEvent.storages.main, 1)
+					addEvent(doStopPikachuEvent, configPikachuEvent.stopEvent * 1000)
+					addEvent(doRepeatCheckPikachuEvent, configPikachuEvent.startEvent * 1000 + 2000)
+					
+					doBroadcastMessage('Pikachu Plague Attack has started. LET\'S GO!')
+				else
+					for _, cid in ipairs(getPlayersOnline()) do
+						if getCreatureStorage(cid, configPikachuEvent.storages.player) > 0 then
+							doCreatureSetNoMove(cid, false)
+							doRemoveCondition(cid, CONDITION_INFIGHT)
+						end
+					end
+					
+					doBroadcastMessage('Pikachu Plague Attack hasn\'t started beacuse there were not enough players.')
+				end
+			end
+			
+			function doRepeatCheckPikachuEvent()
+				if getStorage(configPikachuEvent.storages.main) > 0 then
+					local playerTable, creatureTable, xTable, yTable = {}, {}, {}, {}
+
+					for x = configPikachuEvent.room.from.x, configPikachuEvent.room.to.x do
+						for y = configPikachuEvent.room.from.y, configPikachuEvent.room.to.y do
+							local n, i = getTileInfo({x=x, y=y, z=configPikachuEvent.room.to.z}).creatures, 1
+							if n ~= 0 then
+								local v = getThingfromPos({x=x, y=y, z=configPikachuEvent.room.to.z, stackpos=i}).uid
+								while v ~= 0 do
+									if isPlayer(v) then
+										table.insert(playerTable, v)
+										if n == #playerTable then
+											break
+										end
+									elseif isMonster(v) then
+										table.insert(creatureTable, v)
+										if n == #creatureTable then
+											break
+										end
+									end
+									i = i + 1
+									v = getThingfromPos({x=x, y=y, z=configPikachuEvent.room.to.z, stackpos=i}).uid
+								end
+							end
+							
+							table.insert(xTable, x)
+							table.insert(yTable, y)
+						end
+					end
+
+					if #playerTable == 1 then
+						local prize = math.random(#configPikachuEvent.rewards)
+						
+						addEvent(doTeleportThing, 200, playerTable[1], getTownTemplePosition(getPlayerTown(playerTable[1])), true)
+						doPlayerAddItem(playerTable[1], configPikachuEvent.rewards[prize], 1)
+						doCreatureSetStorage(playerTable[1], configPikachuEvent.storages.kills, 0)
+						doCreatureAddHealth(playerTable[1], getCreatureMaxHealth(playerTable[1]) - getCreatureHealth(playerTable[1]))
+						doCreatureAddMana(playerTable[1], getCreatureMaxMana(playerTable[1]) - getCreatureMana(playerTable[1]))
+						doPlayerSendTextMessage(playerTable[1], MESSAGE_EVENT_ADVANCE, 'You win! You have received '..getItemNameById(configPikachuEvent.rewards[prize])..' as reward.')
+						doBroadcastMessage('Pikachu Plague Attack has finished. The winner is '..getCreatureName(playerTable[1])..'. Congratulations.')
+						db.query("INSERT INTO `events` (`event_name`, `winner_name`, `won_item`, `time_win`) VALUES (\"Pikachu\", \"" .. getCreatureName(playerTable[1]) .. "\", \""..getItemNameById(configPikachuEvent.rewards[prize]).."\", "..getStorage(configPikachuEvent.storages.countEvent)..");")
+						
+						for i = 1, #creatureTable do
+							if isMonster(creatureTable[i]) then
+								doRemoveCreature(creatureTable[i])
+							end
+						end
+						
+						doSetStorage(configPikachuEvent.storages.main, -1)
+						doSetStorage(configPikachuEvent.storages.countEvent, getStorage(configPikachuEvent.storages.countEvent) + 1)
+						return
+					elseif #playerTable == 0 then
+						for i = 1, #creatureTable do
+							if isMonster(creatureTable[i]) then
+								doRemoveCreature(creatureTable[i])
+							end
+						end
+					
+						doBroadcastMessage('No one win in Pikachu Plague Attack.')
+						doSetStorage(configPikachuEvent.storages.main, -1)
+						
+						doSetStorage(configPikachuEvent.storages.countEvent, getStorage(configPikachuEvent.storages.countEvent) + 1)
+						return
+					end
+				
+					local pos = {x=xTable[math.random(#xTable)], y=yTable[math.random(#yTable)], z=7}				
+					for i = 1, configPikachuEvent.amountCreatingMonsters do
+						doCreateMonster(configPikachuEvent.monsters[math.random(#configPikachuEvent.monsters)], pos, false, false, false)
+						doSendMagicEffect(pos, CONST_ME_BATS)
+					end
+					
+					addEvent(doRepeatCheckPikachuEvent, configPikachuEvent.spawnDelay)
+				end
+			end
+			
+			function doCountPlayersPikachuEvent()
+				local x = 0
+				for _, cid in ipairs(getPlayersOnline()) do
+					if getCreatureStorage(cid, configPikachuEvent.storages.player) > 0 then
+						x = x + 1
+					end
+				end
+				return x
+			end
+			
+			function doStartCountingPikachuEvent(x)
+				if configPikachuEvent.delayTime-x > 0 then
+					doBroadcastMessage('Pikachu Plague Attack is going to start in '..configPikachuEvent.delayTime-x..' minutes. You can join to the event by saying "!pikachu join".')
+					addEvent(doStartCountingPikachuEvent, 60*1000, x+1)
+				end
+			end
+		]]>
+	</lib>
+
+	<talkaction words="!pikachu" event="script">
+		<![CDATA[
+			domodlib("config_pikachu_event")
+
+			function onSay(cid, words, param)
+				if getStorage(configPikachuEvent.storages.joining) ~= 1 then
+					return doPlayerSendCancel(cid, 'Pikachu Plague Attack hasn\'t started yet.')
+				elseif param == '' then
+					return doPlayerSendCancel(cid, 'Command param required (say: "!pikachu join" or "!pikachu leave.").')
+				elseif getPlayerLevel(cid) < configPikachuEvent.players.minLevel then
+					return doPlayerSendCancel(cid, 'You can\'t join to the event if you don\'t have a require '..configPikachuEvent.players.minLevel..' level.')
+				elseif getTileInfo(getThingPos(cid)).protection ~= true then
+					return doPlayerSendCancel(cid, 'You can\'t join to the event if you aren\'t in protection zone.')
+				elseif exhaustion.check(cid, configPikachuEvent.storages.exhaust) ~= false then
+					return doPlayerSendCancel(cid, 'You must wait '..exhaustion.get(cid, configPikachuEvent.storages.exhaust)..' seconds to use this command again.')
+				end
+
+				if param == 'join' then
+					if getCreatureStorage(cid, configPikachuEvent.storages.player) > 0 then
+						return doPlayerSendCancel(cid, 'You have arleady joined to event. Wait patiently for start.')
+					elseif doCountPlayersPikachuEvent() == configPikachuEvent.players.max then
+						return doPlayerSendCancel(cid, 'Max players in the event have been reached.')
+					end
+					
+					doCreatureSetNoMove(cid, true)
+					doPlayerPopupFYI(cid, configPikachuEvent.text)
+					doCreatureSetStorage(cid, configPikachuEvent.storages.player, 1)
+					doAddCondition(cid, createConditionObject(CONDITION_INFIGHT, -1))
+					doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, 'You have joined to Pikachu Plague Attack. You can\'t move until event don\'t start. Wait patiently for the event start.')
+					doPlayerSendTextMessage(cid, MESSAGE_EVENT_ORANGE, 'You have joined to Pikachu Plague Attack.')
+				elseif param == 'leave' then
+					if getCreatureStorage(cid, configPikachuEvent.storages.player) <= 0 then
+						return doPlayerSendCancel(cid, 'You can\'t leave from the event if you don\'t join.')
+					end
+					
+					doCreatureSetNoMove(cid, false)
+					doCreatureSetStorage(cid, configPikachuEvent.storages.player, -1)
+					doRemoveCondition(cid, CONDITION_INFIGHT)
+					doPlayerSendTextMessage(cid, MESSAGE_EVENT_ORANGE, 'You have left from the Pikachu Plague Attack.')
+				end
+				
+				exhaustion.set(cid, configPikachuEvent.storages.exhaust, 5)				
+				return true
+			end
+		]]>
+	</talkaction>
+	
+	<talkaction words="!startpikachu" access="5" event="script">
+		<![CDATA[
+			domodlib("config_pikachu_event")
+			domodlib("lib_pikachu_event")
+
+			function onSay(cid, words, param)
+				if getStorage(configPikachuEvent.storages.main) > 0 then
+					return doPlayerSendCancel(cid, 'Pikachu Plague Attack is already running.')
+				end
+			
+				doStartCountingPikachuEvent(0)
+
+				for _, pid in ipairs(getPlayersOnline()) do
+					if getCreatureStorage(pid, configPikachuEvent.storages.player) > 0 then
+						doCreatureSetStorage(pid, configPikachuEvent.storages.player, -1)
+						doTeleportThing(pid, getTownTemplePosition(getPlayerTown(pid)), true)
+						doCreatureSetStorage(pid, configPikachuEvent.storages.kills, 0)
+					end
+				end
+
+				doSetStorage(configPikachuEvent.storages.joining, 1)
+				addEvent(doStartPikachuEvent, configPikachuEvent.delayTime * 60 * 1000)
+				return true
+			end
+		]]>
+	</talkaction>
+	
+	<talkaction words="!stoppikachu" access="5" event="script">
+		<![CDATA[
+			domodlib("config_pikachu_event")
+			domodlib("lib_pikachu_event")
+
+			function onSay(cid, words, param)
+				if getStorage(configPikachuEvent.storages.main) > 0 then
+					doStopPikachuEvent()
+				else
+					doPlayerSendCancel(cid, 'You can not do it if Pikachu Plague Attack is not enabled.')
+				end
+				return true
+			end
+		]]>
+	</talkaction>
+
+	<globalevent name="Pikachu_Event_Days" interval="1000" event="script">
+		<![CDATA[
+			domodlib("config_pikachu_event")
+			domodlib("lib_pikachu_event")
+			
+			local daysOpen = {}			
+			for k, v in pairs(configPikachuEvent.days) do
+				table.insert(daysOpen, k)
+			end
+			
+			function onThink(interval)
+				if isInArray(daysOpen, os.date('%A')) then
+					if isInArray(configPikachuEvent.days[os.date('%A')], os.date('%X', os.time())) then
+						if getStorage(configPikachuEvent.storages.joining) ~= 1 then
+							doStartCountingPikachuEvent(0)
+
+							for _, pid in ipairs(getPlayersOnline()) do
+								if getCreatureStorage(pid, configPikachuEvent.storages.player) > 0 then
+									doCreatureSetStorage(pid, configPikachuEvent.storages.player, -1)
+									doTeleportThing(pid, getTownTemplePosition(getPlayerTown(pid)), true)
+									doCreatureSetStorage(pid, configPikachuEvent.storages.kills, 0)
+								end
+							end
+
+							doSetStorage(configPikachuEvent.storages.joining, 1)
+							addEvent(doStartPikachuEvent, configPikachuEvent.delayTime * 60 * 1000)
+						end
+					end
+				end
+				return true
+			end
+		]]>
+	</globalevent>
+	
+	<event type="statschange" name="Pikachu_Event_Dead" event="script">
+		<![CDATA[
+			domodlib("config_pikachu_event")
+
+			function onStatsChange(cid, attacker, type, combat, value)
+				if type == 1 and getCreatureHealth(cid) <= value then
+					if isInRange(getThingPos(cid), configPikachuEvent.room.from, configPikachuEvent.room.to) then
+						if isPlayer(cid) then
+							doCreatureAddHealth(cid, getCreatureMaxHealth(cid) - getCreatureHealth(cid))
+							doCreatureAddMana(cid, getCreatureMaxMana(cid) - getCreatureMana(cid))
+							doTeleportThing(cid, getTownTemplePosition(getPlayerTown(cid)))
+							doPlayerSendTextMessage(cid, MESSAGE_EVENT_ORANGE, 'You loss due to attack.')
+							
+							doSendAnimatedText(getThingPos(cid), value, TEXTCOLOR_RED)
+							doSendMagicEffect(getThingPos(cid), CONST_ME_TELEPORT)
+							doCreatureSetStorage(cid, configPikachuEvent.storages.kills, 0)
+							return false
+						end
+					end
+				elseif configPikachuEvent.players.pvpEnabled ~= true and isInArray({1,3}, type) and isPlayer(attacker) and isPlayer(cid) then
+					if isInRange(getThingPos(cid), configPikachuEvent.room.from, configPikachuEvent.room.to) then
+						return false
+					end
+				end
+				return true
+			end
+		]]>
+	</event>
+
+	<event type="kill" name="Pikachu_Event_Kill" event="script">
+		<![CDATA[
+			domodlib("config_pikachu_event")
+
+			function onKill(cid, target, damage, flags)
+				if isInRange(getThingPos(cid), configPikachuEvent.room.from, configPikachuEvent.room.to) then
+					if isInArray(configPikachuEvent.monsters, getCreatureName(target)) then
+						doCreatureSetStorage(cid, configPikachuEvent.storages.kills, math.max(0, getCreatureStorage(cid, configPikachuEvent.storages.kills) + 1))
+					end
+				end
+				return true
+			end
+		]]>
+	</event>
+
+	<event type="login" name="Pikachu_Event_Login" event="script">
+		<![CDATA[
+			domodlib("config_pikachu_event")
+
+			function onLogin(cid)
+				if getCreatureStorage(cid, configPikachuEvent.storages.player) > 0 then
+					doCreatureSetStorage(cid, configPikachuEvent.storages.player, -1)
+					doTeleportThing(cid, getTownTemplePosition(getPlayerTown(cid)), true)
+					doCreatureSetNoMove(cid, false)
+					doRemoveCondition(cid, CONDITION_INFIGHT)
+					doCreatureSetStorage(cid, configPikachuEvent.storages.player.kills, 0)
+				end
+
+				registerCreatureEvent(cid, 'Pikachu_Event_Dead')
+				registerCreatureEvent(cid, 'Pikachu_Event_Kill')
+				return true
+			end
+		]]>
+	</event>
+	
+	<globalevent name="Pikachu_Event_Start" type="startup" event="script">
+		<![CDATA[
+			domodlib("config_pikachu_event")
+
+			function onStartup()
+				doSetStorage(configPikachuEvent.storages.main, -1)
+				doSetStorage(configPikachuEvent.storages.joining, -1)
+				return true
+			end
+		]]>
+	</globalevent>
+</mod>
