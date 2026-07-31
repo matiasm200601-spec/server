@@ -1,2 +1,2 @@
 @echo off
-PowerShell -ExecutionPolicy Bypass -File "%~dp0guardar_cambios.ps1"
+powershell.exe -ExecutionPolicy Bypass -File "%~dp0GUARDAR CAMBIOS.ps1"
