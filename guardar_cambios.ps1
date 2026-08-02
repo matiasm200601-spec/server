@@ -2,7 +2,7 @@
 # Guardar cambios del servidor en GitHub
 # =============================================
 $serverPath = "C:\Users\PC\Desktop\PokeRetro Server"
-$repoUrl    = "https://github.com/matiasm200601-spec/server.git"
+$repoUrl    = "https://github.com/matiasm200601-spec/server"
 
 Set-Location $serverPath
 
