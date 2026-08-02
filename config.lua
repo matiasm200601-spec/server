@@ -4,7 +4,7 @@
 	accountManager = true
 	namelockManager = true
 	newPlayerChooseVoc = false
-	newPlayerSpawnPosX = 51
+	newPlayerSpawnPosX = 48
 	newPlayerSpawnPosY = 74
 	newPlayerSpawnPosZ = 7
 	newPlayerTownId = 1

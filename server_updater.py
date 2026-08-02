@@ -16,8 +16,8 @@ RAW_BASE      = f"https://raw.githubusercontent.com/{GITHUB_USER}/{GITHUB_REPO}/
 MANIFEST_URL  = f"{RAW_BASE}/manifest.json"
 SERVER_EXE    = "iniciar.exe"
 
-WINDOW_W = 520
-WINDOW_H = 320
+WINDOW_W = 640
+WINDOW_H = 480
 COLOR_BG         = "#0d0d1a"
 COLOR_BAR_FILL   = "#FFD700"
 COLOR_BAR_EMPTY  = "#3a3000"
@@ -158,7 +158,7 @@ class ServerUpdater:
                 pass
 
         # Overlay inferior
-        self.canvas.create_rectangle(0, WINDOW_H-160, WINDOW_W, WINDOW_H,
+        self.canvas.create_rectangle(0, WINDOW_H-250, WINDOW_W, WINDOW_H,
                                      fill="#000000", stipple="gray50", outline="")
 
         # Botones cerrar / minimizar
@@ -238,21 +238,40 @@ class ServerUpdater:
                                               anchor="e", font=("Arial", 8, "bold"),
                                               fill="#FFD700")
 
-        # Botón acción
-        btn_w, btn_h, btn_r = 200, 38, 19
+        # Botones en orden vertical
+        btn_w, btn_h, btn_r = 240, 45, 22
         btn_x = WINDOW_W//2 - btn_w//2
-        btn_y = WINDOW_H - 48
+        btn_spacing = 55
+        btn_start_y = WINDOW_H - 200
+        
         self._btn_update  = self._make_btn("ACTUALIZAR E INICIAR", btn_w, btn_h, btn_r, "#e94560", "#ffffff", font_path)
         self._btn_start   = self._make_btn("INICIAR SERVIDOR",     btn_w, btn_h, btn_r, "#1a6e1a", "#ffffff", font_path)
         self._btn_stop    = self._make_btn("DETENER SERVIDOR",     btn_w, btn_h, btn_r, "#8b0000", "#ffffff", font_path)
+        self._btn_reload  = self._make_btn("RELOAD",               btn_w, btn_h, btn_r, "#ff8c00", "#ffffff", font_path)
         self._btn_off     = self._make_btn("VERIFICANDO...",       btn_w, btn_h, btn_r, "#555555", "#888888", font_path)
 
+        # Botón principal (actualizar/iniciar/detener/reload)
         self._btn_lbl = tk.Label(self.win, image=self._btn_off,
                                   bg=COLOR_BG, cursor="arrow", bd=0)
-        self._btn_lbl.place(x=btn_x, y=btn_y)
+        self._btn_lbl.place(x=btn_x, y=btn_start_y)
         self._btn_lbl.bind("<Enter>",           self._btn_enter)
         self._btn_lbl.bind("<Leave>",           self._btn_leave)
         self._btn_lbl.bind("<ButtonRelease-1>",  self._btn_click)
+
+        # Botón RELOAD (segundo botón)
+        self._btn_reload_img = self._make_btn("RELOAD", btn_w, btn_h, btn_r, "#ff8c00", "#ffffff", font_path)
+        self._reload_lbl = tk.Label(self.win, image=self._btn_reload_img,
+                                     bg=COLOR_BG, cursor="hand2", bd=0)
+        self._reload_lbl.place(x=btn_x, y=btn_start_y + btn_spacing)
+        self._reload_lbl.bind("<ButtonRelease-1>", self._reload_click)
+        self._reload_lbl.place_forget()  # Oculto por defecto
+
+        # Botón SALIR (tercer botón)
+        self._btn_exit = self._make_btn("SALIR", btn_w, btn_h, btn_r, "#cc0000", "#ffffff", font_path)
+        self._exit_lbl = tk.Label(self.win, image=self._btn_exit,
+                                   bg=COLOR_BG, cursor="hand2", bd=0)
+        self._exit_lbl.place(x=btn_x, y=btn_start_y + btn_spacing*2)
+        self._exit_lbl.bind("<ButtonRelease-1>", lambda e: self._on_close())
 
         self.win.protocol("WM_DELETE_WINDOW", self._on_close)
         self.root.protocol("WM_DELETE_WINDOW", self._on_close)
@@ -265,8 +284,9 @@ class ServerUpdater:
         sw, sh, sr = w*scale, h*scale, r*scale
         img  = Image.new("RGBA", (sw, sh), (0,0,0,0))
         draw = ImageDraw.Draw(img)
-        draw.rounded_rectangle([0,0,sw-1,sh-1], radius=sr, fill=bg,
-                                outline="#000000", width=3*scale)
+        # Borde redondeado sin cuadrados
+        draw.rounded_rectangle([0,0,sw-1,sh-1], radius=sr, fill=bg, outline=None)
+        draw.rounded_rectangle([0,0,sw-1,sh-1], radius=sr, fill=None, outline="#000000", width=2*scale)
         try:
             font = ImageFont.truetype(font_path, 10*scale)
         except Exception:
@@ -289,10 +309,17 @@ class ServerUpdater:
             imgs = {"update":  self._btn_update,
                     "start":   self._btn_start,
                     "running": self._btn_stop,
+                    "reload":  self._btn_reload,
                     "disabled":self._btn_off}
             self._btn_lbl.config(
                 image=imgs.get(state, self._btn_off),
                 cursor="hand2" if state != "disabled" else "arrow")
+            
+            # Mostrar/ocultar botón RELOAD según estado
+            if state == "reload":
+                self._reload_lbl.place(x=WINDOW_W//2 - 120, y=WINDOW_H - 200 + 55)
+            else:
+                self._reload_lbl.place_forget()
         self.win.after(0, _u)
 
     def _btn_enter(self, e): pass
@@ -306,6 +333,12 @@ class ServerUpdater:
             threading.Thread(target=self._start_server, daemon=True).start()
         elif self._btn_state == "running":
             self._stop_server()
+        elif self._btn_state == "reload":
+            # No hacer nada en el botón principal cuando está en estado reload
+            pass
+    
+    def _reload_click(self, e):
+        threading.Thread(target=self._reload_server, daemon=True).start()
 
     # ---- drag ----
     def _drag_start(self, event):
@@ -419,9 +452,12 @@ class ServerUpdater:
             self._set_btn_state("start")
             return
         try:
-            self._server_proc = subprocess.Popen([exe_path], cwd=server_dir)
+            self._server_proc = subprocess.Popen([exe_path], cwd=server_dir, 
+                                                 stdin=subprocess.PIPE, 
+                                                 stdout=subprocess.PIPE, 
+                                                 stderr=subprocess.PIPE)
             self._set_log(f"✓ Servidor iniciado (PID {self._server_proc.pid})")
-            self._set_btn_state("running")
+            self._set_btn_state("reload")
             threading.Thread(target=self._wait_server, daemon=True).start()
         except Exception as ex:
             self._set_log(f"Error al iniciar:\n{ex}")
@@ -439,6 +475,23 @@ class ServerUpdater:
             try: self._server_proc.terminate()
             except Exception: pass
         self._set_btn_state("start")
+
+    def _reload_server(self):
+        if not self._server_proc:
+            self._set_log("Servidor no está corriendo.")
+            return
+        self._set_log("Enviando comando /reload...")
+        try:
+            # Envía el comando /reload al proceso del servidor
+            # Esto asume que el servidor acepta comandos por stdin
+            if self._server_proc.poll() is None:  # Verifica que esté corriendo
+                self._server_proc.stdin.write(b"/reload\n")
+                self._server_proc.stdin.flush()
+                self._set_log("✓ Comando /reload enviado.")
+            else:
+                self._set_log("Error: Servidor no responde.")
+        except Exception as ex:
+            self._set_log(f"Error al enviar /reload:\n{ex}")
 
     def _on_close(self):
         if self._server_proc:

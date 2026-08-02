@@ -25,6 +25,8 @@
   <spawn centerx="2219" centery="594" centerz="2" radius="5"/>
   <spawn centerx="2208" centery="596" centerz="2" radius="5"/>
   <spawn centerx="2204" centery="607" centerz="2" radius="5"/>
+  <spawn centerx="1049" centery="1049" centerz="2" radius="1"/>
+  <spawn centerx="1052" centery="1057" centerz="2" radius="1"/>
   <spawn centerx="1137" centery="1108" centerz="2" radius="20"/>
   <spawn centerx="1133" centery="1421" centerz="2" radius="10"/>
   <spawn centerx="1135" centery="1441" centerz="2" radius="10"/>
@@ -390,7 +392,6 @@
   <spawn centerx="845" centery="1036" centerz="5" radius="20"/>
   <spawn centerx="1240" centery="1038" centerz="5" radius="30"/>
   <spawn centerx="2018" centery="1048" centerz="5" radius="5"/>
-  <spawn centerx="1058" centery="1052" centerz="5" radius="5"/>
   <spawn centerx="2013" centery="1057" centerz="5" radius="5"/>
   <spawn centerx="2025" centery="1058" centerz="5" radius="5"/>
   <spawn centerx="2002" centery="1059" centerz="5" radius="5"/>
@@ -722,7 +723,6 @@
   <spawn centerx="658" centery="1038" centerz="6" radius="10"/>
   <spawn centerx="2383" centery="1042" centerz="6" radius="30"/>
   <spawn centerx="1229" centery="1048" centerz="6" radius="1"/>
-  <spawn centerx="1046" centery="1054" centerz="6" radius="1"/>
   <spawn centerx="776" centery="1068" centerz="6" radius="1"/>
   <spawn centerx="996" centery="1069" centerz="6" radius="1"/>
   <spawn centerx="995" centery="1071" centerz="6" radius="1"/>
@@ -881,8 +881,6 @@
   <spawn centerx="1322" centery="1785" centerz="6" radius="20"/>
   <spawn centerx="1366" centery="1785" centerz="6" radius="20"/>
   <spawn centerx="1285" centery="1790" centerz="6" radius="20"/>
-  <spawn centerx="43" centery="77" centerz="7" radius="1"/>
-  <spawn centerx="56" centery="77" centerz="7" radius="1"/>
   <spawn centerx="919" centery="216" centerz="7" radius="30"/>
   <spawn centerx="947" centery="219" centerz="7" radius="30"/>
   <spawn centerx="878" centery="227" centerz="7" radius="30"/>
@@ -1362,23 +1360,24 @@
   <spawn centerx="1229" centery="1048" centerz="7" radius="1"/>
   <spawn centerx="1895" centery="1048" centerz="7" radius="5"/>
   <spawn centerx="1053" centery="1050" centerz="7" radius="5"/>
+  <spawn centerx="1073" centery="1052" centerz="7" radius="1"/>
   <spawn centerx="1143" centery="1052" centerz="7" radius="30"/>
   <spawn centerx="1917" centery="1052" centerz="7" radius="5"/>
   <spawn centerx="1976" centery="1053" centerz="7" radius="5"/>
   <spawn centerx="1941" centery="1054" centerz="7" radius="5"/>
-  <spawn centerx="1093" centery="1055" centerz="7" radius="1"/>
   <spawn centerx="1963" centery="1056" centerz="7" radius="5"/>
   <spawn centerx="1907" centery="1057" centerz="7" radius="5"/>
   <spawn centerx="1928" centery="1057" centerz="7" radius="5"/>
   <spawn centerx="1985" centery="1057" centerz="7" radius="5"/>
   <spawn centerx="668" centery="1058" centerz="7" radius="30"/>
-  <spawn centerx="1045" centery="1058" centerz="7" radius="5"/>
+  <spawn centerx="1044" centery="1058" centerz="7" radius="5"/>
   <spawn centerx="1056" centery="1058" centerz="7" radius="5"/>
   <spawn centerx="1950" centery="1058" centerz="7" radius="5"/>
   <spawn centerx="1916" centery="1063" centerz="7" radius="5"/>
   <spawn centerx="1936" centery="1064" centerz="7" radius="5"/>
   <spawn centerx="1969" centery="1065" centerz="7" radius="5"/>
   <spawn centerx="1958" centery="1067" centerz="7" radius="5"/>
+  <spawn centerx="1035" centery="1068" centerz="7" radius="1"/>
   <spawn centerx="1926" centery="1069" centerz="7" radius="5"/>
   <spawn centerx="1947" centery="1069" centerz="7" radius="5"/>
   <spawn centerx="1980" centery="1070" centerz="7" radius="5"/>
@@ -1614,6 +1613,8 @@
   <spawn centerx="1307" centery="1791" centerz="7" radius="30"/>
   <spawn centerx="1241" centery="1793" centerz="7" radius="30"/>
   <spawn centerx="1288" centery="1797" centerz="7" radius="30"/>
+  <spawn centerx="43" centery="74" centerz="8" radius="1"/>
+  <spawn centerx="56" centery="74" centerz="8" radius="1"/>
   <spawn centerx="1913" centery="584" centerz="8" radius="30"/>
   <spawn centerx="1924" centery="634" centerz="8" radius="30"/>
   <spawn centerx="1929" centery="670" centerz="8" radius="30"/>
@@ -1727,7 +1728,9 @@
   <spawn centerx="939" centery="1029" centerz="8" radius="30"/>
   <spawn centerx="980" centery="1033" centerz="8" radius="30"/>
   <spawn centerx="886" centery="1038" centerz="8" radius="30"/>
-  <spawn centerx="1041" centery="1038" centerz="8" radius="30"/>
+  <spawn centerx="1041" centery="1038" centerz="8" radius="30">
+    <monster name="Rattata" x="2" y="23" z="8" spawntime="60"/>
+  </spawn>
   <spawn centerx="1218" centery="1043" centerz="8" radius="10"/>
   <spawn centerx="1245" centery="1045" centerz="8" radius="10"/>
   <spawn centerx="1218" centery="1047" centerz="8" radius="10"/>
@@ -1735,9 +1738,10 @@
   <spawn centerx="1070" centery="1052" centerz="8" radius="30"/>
   <spawn centerx="695" centery="1055" centerz="8" radius="30"/>
   <spawn centerx="1247" centery="1059" centerz="8" radius="5"/>
+  <spawn centerx="1045" centery="1060" centerz="8" radius="5"/>
   <spawn centerx="828" centery="1069" centerz="8" radius="30"/>
   <spawn centerx="735" centery="1075" centerz="8" radius="30"/>
-  <spawn centerx="1049" centery="1077" centerz="8" radius="5"/>
+  <spawn centerx="1046" centery="1075" centerz="8" radius="30"/>
   <spawn centerx="1141" centery="1081" centerz="8" radius="10"/>
   <spawn centerx="889" centery="1086" centerz="8" radius="30"/>
   <spawn centerx="921" centery="1105" centerz="8" radius="30"/>
