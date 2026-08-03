@@ -56,11 +56,24 @@ try {
     
     Write-Host ""
     Write-Host "[6/7] Subiendo a repositorio principal (server)..." -ForegroundColor Yellow
+    
+    # Intentar pull primero para sincronizar
+    Write-Host "Sincronizando con repositorio remoto..." -ForegroundColor Cyan
+    git pull origin main --rebase --autostash
+    
+    # Intentar push
     git push origin main
     
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "ERROR: No se pudo subir al repositorio principal." -ForegroundColor Red
-        Write-Host "Verifica tu conexión a internet y credenciales de GitHub." -ForegroundColor Red
+        Write-Host "Push normal falló, intentando con --force..." -ForegroundColor Yellow
+        git push origin main --force
+        
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "ERROR: No se pudo subir al repositorio principal." -ForegroundColor Red
+            Write-Host "Verifica tu conexión a internet y credenciales de GitHub." -ForegroundColor Red
+        } else {
+            Write-Host "✓ Subido a 'server' exitosamente (con force)!" -ForegroundColor Green
+        }
     } else {
         Write-Host "✓ Subido a 'server' exitosamente!" -ForegroundColor Green
     }
@@ -77,8 +90,12 @@ try {
         git remote add beta https://github.com/matiasm200601-spec/Server0.1.git
     }
     
-    # Subir a beta
-    git push -u beta main --force
+    # Intentar pull primero
+    Write-Host "Sincronizando con repositorio beta..." -ForegroundColor Cyan
+    git pull beta main --rebase --autostash 2>&1 | Out-Null
+    
+    # Subir a beta (siempre con force para sobrescribir)
+    git push beta main --force
     
     if ($LASTEXITCODE -ne 0) {
         Write-Host "ERROR: No se pudo subir al repositorio beta." -ForegroundColor Red
