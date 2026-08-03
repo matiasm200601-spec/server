@@ -50,11 +50,12 @@ try {
     
     if ($null -eq $remotoBeta) {
         Write-Host "Configurando remoto 'beta'..." -ForegroundColor Cyan
-        git remote add beta https://github.com/matiasm200601-spec/Serverbeta01.git
+        git remote add beta git@github.com:matiasm200601-spec/serverbeta0.1.git
+        git branch -M main
     }
     
     # Subir a beta
-    git push beta main
+    git push -u beta main
     
     Write-Host ""
     Write-Host "===============================================" -ForegroundColor Green
