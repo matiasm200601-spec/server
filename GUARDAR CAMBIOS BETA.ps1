@@ -5,7 +5,7 @@ param(
     [string]$mensaje = ""
 )
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 Set-Location $PSScriptRoot
 
 Write-Host ""
@@ -15,7 +15,12 @@ Write-Host "===============================================" -ForegroundColor Cy
 Write-Host ""
 
 try {
-    Write-Host "[1/6] Regenerando manifest..." -ForegroundColor Yellow
+    Write-Host "[1/7] Verificando configuración de Git..." -ForegroundColor Yellow
+    
+    # Configurar Git para evitar problemas de SSH
+    $env:GIT_SSH_COMMAND = "ssh -o StrictHostKeyChecking=no"
+    
+    Write-Host "[2/7] Regenerando manifest..." -ForegroundColor Yellow
     
     # Verificar si Python existe
     $pythonPath = "C:\Users\PC\AppData\Local\Programs\Python\Python314\python.exe"
@@ -27,49 +32,64 @@ try {
     & $pythonPath generar_manifest.py
     
     Write-Host ""
-    Write-Host "[2/6] Verificando cambios..." -ForegroundColor Yellow
-    git status
+    Write-Host "[3/7] Verificando cambios..." -ForegroundColor Yellow
+    git status --short
     
     Write-Host ""
-    Write-Host "[3/6] Agregando archivos..." -ForegroundColor Yellow
+    Write-Host "[4/7] Agregando archivos..." -ForegroundColor Yellow
     git add -A
     
     Write-Host ""
-    Write-Host "[4/6] Creando commit..." -ForegroundColor Yellow
+    Write-Host "[5/7] Creando commit..." -ForegroundColor Yellow
     
     if ($mensaje -eq "") {
-        $mensaje = Read-Host "Describe los cambios realizados"
+        $mensaje = Read-Host "Describe los cambios realizados (Enter para usar mensaje default)"
         if ($mensaje -eq "") {
-            $mensaje = "Actualizacion del servidor beta"
+            $mensaje = "Actualizacion del servidor beta - $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
         }
     }
     
-    git commit -m $mensaje
+    git commit -m "$mensaje"
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "No hay cambios para hacer commit." -ForegroundColor Yellow
+    }
     
     Write-Host ""
-    Write-Host "[5/6] Subiendo a repositorio principal (server)..." -ForegroundColor Yellow
+    Write-Host "[6/7] Subiendo a repositorio principal (server)..." -ForegroundColor Yellow
     git push origin main
     
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "ERROR: No se pudo subir al repositorio principal." -ForegroundColor Red
+        Write-Host "Verifica tu conexión a internet y credenciales de GitHub." -ForegroundColor Red
+    } else {
+        Write-Host "✓ Subido a 'server' exitosamente!" -ForegroundColor Green
+    }
+    
     Write-Host ""
-    Write-Host "[6/6] Subiendo a repositorio beta (Server0.1)..." -ForegroundColor Yellow
+    Write-Host "[7/7] Subiendo a repositorio beta (Server0.1)..." -ForegroundColor Yellow
     
     # Verificar si el remoto beta existe
-    $remotoBeta = git remote | Select-String -Pattern "beta"
+    $remoteCheck = git remote 2>&1
+    $remotoBeta = $remoteCheck | Select-String -Pattern "beta"
     
     if ($null -eq $remotoBeta) {
         Write-Host "Configurando remoto 'beta'..." -ForegroundColor Cyan
         git remote add beta https://github.com/matiasm200601-spec/Server0.1.git
-        git branch -M main
     }
     
     # Subir a beta
-    git push -u beta main -f
+    git push -u beta main --force
+    
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "ERROR: No se pudo subir al repositorio beta." -ForegroundColor Red
+        Write-Host "Verifica que el repositorio Server0.1 exista en GitHub." -ForegroundColor Red
+    } else {
+        Write-Host "✓ Subido a 'Server0.1' exitosamente!" -ForegroundColor Green
+    }
     
     Write-Host ""
     Write-Host "===============================================" -ForegroundColor Green
-    Write-Host "   CAMBIOS GUARDADOS EN AMBOS REPOSITORIOS!" -ForegroundColor Green
-    Write-Host "   - Server (principal)" -ForegroundColor Green
-    Write-Host "   - Server0.1 (beta)" -ForegroundColor Green
+    Write-Host "   PROCESO COMPLETADO!" -ForegroundColor Green
     Write-Host "===============================================" -ForegroundColor Green
     Write-Host ""
     
