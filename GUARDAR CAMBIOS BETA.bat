@@ -1,2 +1,3 @@
 @echo off
-powershell.exe -ExecutionPolicy Bypass -File "%~dp0GUARDAR CAMBIOS BETA.ps1"
+echo Iniciando script de subida a GitHub...
+powershell.exe -NoExit -ExecutionPolicy Bypass -File "%~dp0GUARDAR CAMBIOS BETA.ps1"

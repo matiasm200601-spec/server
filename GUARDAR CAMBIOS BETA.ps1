@@ -15,7 +15,7 @@ Write-Host "===============================================" -ForegroundColor Cy
 Write-Host ""
 
 try {
-    Write-Host "[1/7] Verificando configuración de Git..." -ForegroundColor Yellow
+    Write-Host "[1/7] Verificando configuracion de Git..." -ForegroundColor Yellow
     
     # Configurar Git para evitar problemas de SSH
     $env:GIT_SSH_COMMAND = "ssh -o StrictHostKeyChecking=no"
@@ -45,7 +45,8 @@ try {
     if ($mensaje -eq "") {
         $mensaje = Read-Host "Describe los cambios realizados (Enter para usar mensaje default)"
         if ($mensaje -eq "") {
-            $mensaje = "Actualizacion del servidor beta - $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
+            $fecha = Get-Date -Format "yyyy-MM-dd HH:mm"
+            $mensaje = "Actualizacion del servidor beta - $fecha"
         }
     }
     
@@ -65,17 +66,17 @@ try {
     git push origin main
     
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "Push normal falló, intentando con --force..." -ForegroundColor Yellow
+        Write-Host "Push normal fallo, intentando con --force..." -ForegroundColor Yellow
         git push origin main --force
         
         if ($LASTEXITCODE -ne 0) {
             Write-Host "ERROR: No se pudo subir al repositorio principal." -ForegroundColor Red
-            Write-Host "Verifica tu conexión a internet y credenciales de GitHub." -ForegroundColor Red
+            Write-Host "Verifica tu conexion a internet y credenciales de GitHub." -ForegroundColor Red
         } else {
-            Write-Host "✓ Subido a 'server' exitosamente (con force)!" -ForegroundColor Green
+            Write-Host "Subido a 'server' exitosamente (con force)!" -ForegroundColor Green
         }
     } else {
-        Write-Host "✓ Subido a 'server' exitosamente!" -ForegroundColor Green
+        Write-Host "Subido a 'server' exitosamente!" -ForegroundColor Green
     }
     
     Write-Host ""
@@ -101,7 +102,7 @@ try {
         Write-Host "ERROR: No se pudo subir al repositorio beta." -ForegroundColor Red
         Write-Host "Verifica que el repositorio Server0.1 exista en GitHub." -ForegroundColor Red
     } else {
-        Write-Host "✓ Subido a 'Server0.1' exitosamente!" -ForegroundColor Green
+        Write-Host "Subido a 'Server0.1' exitosamente!" -ForegroundColor Green
     }
     
     Write-Host ""
@@ -111,13 +112,13 @@ try {
     Write-Host ""
     
     Write-Host "Presiona cualquier tecla para continuar..." -ForegroundColor Gray
-    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
 }
 catch {
     Write-Host ""
     Write-Host "ERROR: $_" -ForegroundColor Red
     Write-Host ""
     Write-Host "Presiona cualquier tecla para continuar..." -ForegroundColor Gray
-    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
     exit 1
 }
