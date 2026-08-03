@@ -16,7 +16,15 @@ Write-Host ""
 
 try {
     Write-Host "[1/6] Regenerando manifest..." -ForegroundColor Yellow
-    & "C:\Users\PC\AppData\Local\Programs\Python\Python314\python.exe" generar_manifest.py
+    
+    # Verificar si Python existe
+    $pythonPath = "C:\Users\PC\AppData\Local\Programs\Python\Python314\python.exe"
+    if (-not (Test-Path $pythonPath)) {
+        # Intentar con python en PATH
+        $pythonPath = "python"
+    }
+    
+    & $pythonPath generar_manifest.py
     
     Write-Host ""
     Write-Host "[2/6] Verificando cambios..." -ForegroundColor Yellow
@@ -43,25 +51,25 @@ try {
     git push origin main
     
     Write-Host ""
-    Write-Host "[6/6] Subiendo a repositorio beta (Serverbeta01)..." -ForegroundColor Yellow
+    Write-Host "[6/6] Subiendo a repositorio beta (Server0.1)..." -ForegroundColor Yellow
     
     # Verificar si el remoto beta existe
     $remotoBeta = git remote | Select-String -Pattern "beta"
     
     if ($null -eq $remotoBeta) {
         Write-Host "Configurando remoto 'beta'..." -ForegroundColor Cyan
-        git remote add beta git@github.com:matiasm200601-spec/serverbeta0.1.git
+        git remote add beta https://github.com/matiasm200601-spec/Server0.1.git
         git branch -M main
     }
     
     # Subir a beta
-    git push -u beta main
+    git push -u beta main -f
     
     Write-Host ""
     Write-Host "===============================================" -ForegroundColor Green
     Write-Host "   CAMBIOS GUARDADOS EN AMBOS REPOSITORIOS!" -ForegroundColor Green
     Write-Host "   - Server (principal)" -ForegroundColor Green
-    Write-Host "   - Serverbeta01 (beta)" -ForegroundColor Green
+    Write-Host "   - Server0.1 (beta)" -ForegroundColor Green
     Write-Host "===============================================" -ForegroundColor Green
     Write-Host ""
     
